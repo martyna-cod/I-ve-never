@@ -11,16 +11,16 @@ router.get("/user", (req, res, next) => {
 });
 
 router.post("/signup", (req, res, next) => {
-  const { email, password } = req.body;
+  const { userName, password } = req.body;
   // const email = req.body.email
   // const password = req.body.password
   //
-  if (email === "" || password === "") {
+  if (userName === "" || password === "") {
     return res.status(400).send("Entry all inputs");
   }
-  console.log(email, password);
+  console.log(userName, password);
 
-  User.create({ email, password: bcrypt.hashSync(req.body.password, 10) })
+  User.create({ userName, password: bcrypt.hashSync(req.body.password, 10) })
     .then(newUser => res.json(newUser))
     .catch(next);
 });
