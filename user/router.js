@@ -10,7 +10,7 @@ router.get("/user", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/user", (req, res, next) => {
+router.post("/signup", (req, res, next) => {
   const { email, password } = req.body;
   // const email = req.body.email
   // const password = req.body.password
