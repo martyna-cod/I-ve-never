@@ -11,8 +11,8 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(userRouter);
 app.use(authRouter);
+app.use(userRouter);
 app.use(roomRouter);
 // const streams = {};
 

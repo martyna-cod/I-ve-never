@@ -25,6 +25,7 @@ router.post("/login", (req, res) => {
             message: "User with that userName does not exist"
           });
         } else if (bcrypt.compareSync(req.body.password, entity.password)) {
+          //our solution is here
           // 3. if the password is correct, return a JWT with the userId of the user (user.id)
           res.send({
             jwt: toJWT({ userId: entity.id })
