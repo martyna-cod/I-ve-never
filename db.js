@@ -6,7 +6,7 @@ const databaseUrl =
 
 const db = new Sequelize(databaseUrl);
 
-db.sync()
+db.sync({ force: false }) // don't delete all the data
   .then(() => console.log("Database is connected"))
   .catch(console.error);
 
