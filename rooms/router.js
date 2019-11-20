@@ -12,7 +12,6 @@ function factory(stream) {
     const { roomName, questions } = req.body;
     const room = await Room.create({ roomName });
     const question = await Question.create({ questions});
-
     const action = {
       type: "ROOM",
       payload: room
