@@ -1,11 +1,17 @@
 const { Router } = require("express");
 const Room = require("../rooms/model");
+const User = require("../user/model");
+const Question= require("../questions/model")
 const auth = require("../auth/middleWare");
 
 function factory(stream) {
   const router = new Router();
+
   router.post("/room", async (req, res, next) => {
-    const room = await Room.create(req.body);
+    console.log({ lmatias: req.body });
+    const { roomName, questions } = req.body;
+    const room = await Room.create({ roomName });
+    const question = await Question.create({ questions});
 
     const action = {
       type: "ROOM",
@@ -16,23 +22,31 @@ function factory(stream) {
 
     stream.send(string);
 
-    res.send(room); //jsut for testing
+    res.send(room,question); //jsut for testing
   });
 
   router.put("/join/:name", auth, async (req, res) => {
+    //console.log({ user: req.user });
     const { user } = req;
 
-    console.log(auth);
-    const { name } = req.params;
-    // const room = await Room.findOne({ where: { roomName: name } });
-    const updated = await user.update({ roomId: room.id });
+    //console.log(auth);
 
-    const room = await Room.findOne({ where: { roomName } });
+    if (!user) {
+      return next("No user found");
+    }
+    const { name } = req.params;
+    const userToUpdate = await User.findByPk(req.user.dataValues.id);
+    console.log({ USER: userToUpdate });
+    const room = await Room.findOne({ where: { roomName: name } });
+
+    const updated = await userToUpdate.update({ roomId: room.id });
+
+    //const room = await Room.findOne({ where: { roomName: name } });
 
     const rooms = await Room.findAll({ include: [User] });
 
     const action = {
-      type: "ROOM",
+      type: "ROOMS",
       payload: rooms
     };
 
