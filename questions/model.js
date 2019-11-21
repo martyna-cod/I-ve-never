@@ -8,4 +8,5 @@ const Question = db.define("question", {
   }
 });
 
+
 module.exports = Question;

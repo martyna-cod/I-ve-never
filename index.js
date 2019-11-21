@@ -1,11 +1,11 @@
 const express = require("express");
-const userRouter = require("./user/router");
 const bodyParser = require("body-parser");
-const authRouter = require("./auth/router");
-const roomFactory = require("./rooms/router");
-const questionRouter = require("./questions/router");
 const cors = require("cors");
 const Sse = require("json-sse");
+const authRouter = require("./auth/router");
+const userRouter = require("./user/router");
+const roomFactory = require("./rooms/router");
+const questionRouter = require("./questions/router");
 const Room = require("./rooms/model");
 const User = require("./user/model");
 
@@ -40,7 +40,7 @@ const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Server is listening on port: ${port}`));
 
 //    const string = JSON.stringify(rooms);
-//   stream.upd2ateInit(string);a
+//   stream.updateInit(string);a
 //   stream.init(req, res);
 // });
 

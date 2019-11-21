@@ -1,27 +1,40 @@
 const { Router } = require("express");
 const Room = require("../rooms/model");
 const User = require("../user/model");
-const Question= require("../questions/model")
+const Question = require("../questions/model");
 const auth = require("../auth/middleWare");
 
 function factory(stream) {
   const router = new Router();
 
-  router.post("/room", async (req, res, next) => {
-    console.log({ lmatias: req.body });
+  router.post("/room", auth, async (req, res, next) => {
+    console.log({ Matiassssssssssssss: req.body });
     const { roomName, questions } = req.body;
     const room = await Room.create({ roomName });
-    const question = await Question.create({ questions});
+    console.log(questions); //=>
+
+    Question.create({ question: questions.q1 }); //=>
+    Question.create({ question: questions.q2 }); //=>
+    Question.create({ question: questions.q3 }); //=>
+    Question.create({ question: questions.q4 }); //=>
+    Question.create({ question: questions.q5 }); //=>
+
+    const updated = await Room.findAll({ include: [User, Question] }); // include questions
+
+    // const action = {
+    //   ty
+    // }
+
     const action = {
-      type: "ROOM",
-      payload: room
+      type: "ROOMS",
+      payload: updated
     };
 
     const string = JSON.stringify(action);
 
     stream.send(string);
 
-    res.send(room,question); //jsut for testing
+    res.send(room); //jsut for testing
   });
 
   router.put("/join/:name", auth, async (req, res) => {
@@ -42,7 +55,7 @@ function factory(stream) {
 
     //const room = await Room.findOne({ where: { roomName: name } });
 
-    const rooms = await Room.findAll({ include: [User] });
+    const rooms = await Room.findAll({ include: [User] }); // include questions
 
     const action = {
       type: "ROOMS",

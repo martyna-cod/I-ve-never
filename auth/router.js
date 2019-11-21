@@ -4,10 +4,11 @@ const User = require("../user/model");
 const bcrypt = require("bcrypt");
 
 const router = new Router();
-// creating a user account
+// checking a user account
 router.post("/login", (req, res) => {
-  const userName = req.body.userName;
-  const password = req.body.password;
+  const { userName, password } = req.body;
+  // const userName = req.body.userName;
+  // const password = req.body.password;
 
   if (!userName || !password) {
     res.status(400).send({

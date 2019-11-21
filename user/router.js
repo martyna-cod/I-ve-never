@@ -4,25 +4,33 @@ const bcrypt = require("bcrypt");
 
 const router = new Router();
 
-router.get("/user", (req, res, next) => {
-  User.findAll()
-    .then(user => res.send(user))
-    .catch(next);
+router.get("/user", async (req, res, next) => {
+  const user = await User.findAll();
+  res.send(user);
+
+  // User.findAll()
+  //   .then(user => res.send(user))
+  //   .catch(next);
 });
 
-router.post("/user", (req, res, next) => {
+router.post("/user", async (req, res, next) => {
   const { userName, password } = req.body;
-  // const email = req.body.email
+  // const userName = req.body.userName
   // const password = req.body.password
   //
   if (userName === "" || password === "") {
     return res.status(400).send("Entry all inputs");
   }
-  console.log(userName, password);
+  console.log({ USER_NAME: userName, PASSWORD: password });
 
-  User.create({ userName, password: bcrypt.hashSync(req.body.password, 10) })
-    .then(newUser => res.json(newUser))
-    .catch(next);
+  const newUser = await User.create({
+    userName, // => userName:userName
+    password: bcrypt.hashSync(password, 10)
+  });
+  res.json(newUser);
+  // User.create({ userName, password: bcrypt.hashSync(req.body.password, 10) }) // req.body.password is not necessary => just password
+  //   .then(newUser => res.json(newUser))
+  //   .catch(next);
 });
 
 module.exports = router;
