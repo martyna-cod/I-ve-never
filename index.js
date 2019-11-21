@@ -8,6 +8,7 @@ const roomFactory = require("./rooms/router");
 const questionRouter = require("./questions/router");
 const Room = require("./rooms/model");
 const User = require("./user/model");
+const Question = require("./questions/model");
 
 const app = express();
 const stream = new Sse();
@@ -21,7 +22,7 @@ app.use(roomRouter); ///======> roomFactory connect
 app.use(questionRouter);
 
 app.get("/stream", async (req, res, next) => {
-  const rooms = await Room.findAll({ include: [User] });
+  const rooms = await Room.findAll({ include: [User, Question] });
 
   const action = {
     type: "ROOMS",

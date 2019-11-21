@@ -7,23 +7,21 @@ const auth = require("../auth/middleWare");
 function factory(stream) {
   const router = new Router();
 
-  router.post("/room", auth, async (req, res, next) => {
+  router.post("/room", async (req, res, next) => {
     console.log({ Matiassssssssssssss: req.body });
     const { roomName, questions } = req.body;
     const room = await Room.create({ roomName });
     console.log(questions); //=>
 
-    Question.create({ question: questions.q1 }); //=>
-    Question.create({ question: questions.q2 }); //=>
-    Question.create({ question: questions.q3 }); //=>
-    Question.create({ question: questions.q4 }); //=>
-    Question.create({ question: questions.q5 }); //=>
+    await Question.create({ question: questions.q1, roomId: room.id }); //=>
+    await Question.create({ question: questions.q2, roomId: room.id }); //=>
+    await Question.create({ question: questions.q3, roomId: room.id }); //=>
+    await Question.create({ question: questions.q4, roomId: room.id }); //=>
+    await Question.create({ question: questions.q5, roomId: room.id }); //=>
 
     const updated = await Room.findAll({ include: [User, Question] }); // include questions
 
-    // const action = {
-    //   ty
-    // }
+    console.log("updated test:", updated);
 
     const action = {
       type: "ROOMS",
@@ -55,7 +53,7 @@ function factory(stream) {
 
     //const room = await Room.findOne({ where: { roomName: name } });
 
-    const rooms = await Room.findAll({ include: [User] }); // include questions
+    const rooms = await Room.findAll({ include: [User, Question] }); // include questions
 
     const action = {
       type: "ROOMS",
