@@ -49,7 +49,7 @@ function factory(stream) {
     console.log({ USER: userToUpdate });
     const room = await Room.findOne({ where: { roomName: name } });
 
-    const updated = await userToUpdate.update({ roomId: room.id });
+    const updated = await userToUpdate.update({ roomId: room.id, iHave:null });
 
     //const room = await Room.findOne({ where: { roomName: name } });
 
@@ -65,6 +65,68 @@ function factory(stream) {
     stream.send(string);
 
     res.send(updated);
+  });
+
+  router.put("/choice/:name", auth, async (req, res, next) => {
+    const { user } = req;
+    const { name } = req.params;
+    console.log(user);
+    //console.log(auth);
+
+    try {
+      const room = await Room.findOne({
+        where: { roomName: name },
+        include: [User]
+      });
+      const users = room.users;
+
+      const updated = await user.update(req.body);
+      const rooms = await Room.findAll({ include: [User, Question] });
+      console.log(req.body);
+      const action = {
+        type: "ROOMS",
+        payload: rooms
+      };
+
+      const string = JSON.stringify(action);
+
+      stream.send(string);
+      res.send(updated);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+
+  router.put("/round/:name", auth, async (req, res, next) => {
+    const { user } = req;
+    const { name } = req.params;
+    console.log(user);
+    //console.log(auth);
+
+    try {
+      const room = await Room.findOne({
+        where: { roomName: name },
+        include: [User]
+      });
+      
+
+    const updated = await room.increment('round');
+
+      const rooms = await Room.findAll({ include: [User, Question] });
+      console.log(req.body);
+      const action = {
+        type: "ROOMS",
+        payload: rooms
+      };
+
+      const string = JSON.stringify(action);
+
+      stream.send(string);
+      res.send(updated);
+    } catch (error) {
+      next(error);
+    }
   });
 
   return router;

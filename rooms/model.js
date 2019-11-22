@@ -7,6 +7,10 @@ const Room = db.define("room", {
   roomName: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  round:{
+    type:Sequelize.INTEGER,
+    defaultValue:0
   }
 });
 
