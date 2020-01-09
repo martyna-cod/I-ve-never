@@ -18,7 +18,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(authRouter);
 app.use(userRouter);
-app.use(roomRouter); ///======> roomFactory connect
+app.use(roomRouter); 
 app.use(questionRouter);
 
 app.get("/stream", async (req, res, next) => {
@@ -39,25 +39,3 @@ app.get("/", (req, res, next) => res.send("hello there"));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Server is listening on port: ${port}`));
-
-//    const string = JSON.stringify(rooms);
-//   stream.updateInit(string);a
-//   stream.init(req, res);
-// });
-
-// const messages = {}
-
-// app.post("/message/:roomName", (req, res) => {
-//     const { message } = req.body
-//     const { roomName } = req.params
-//     const room = message[roomName]
-// const streams = {};
-
-// app.get("/stream", (req, res, next) => {
-//   Room.findAll().then(rooms => {
-//     const string = JSON.stringify(rooms);
-
-//     stream.updateInit(string);
-//     stream.init(req, res);
-//   });
-// });
